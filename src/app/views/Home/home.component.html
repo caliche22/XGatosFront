@@ -1,0 +1,45 @@
+<div class="container">
+  <section class="picker">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Selecciona una raza</mat-label>
+      <mat-select [formControl]="selectedId">
+        <mat-option *ngFor="let b of breeds()" [value]="b.id">{{ b.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+
+  <section class="detail" *ngIf="selectedBreed() as breed">
+    <app-breed-card [breed]="breed"></app-breed-card>
+    <app-carousel [images]="images()"></app-carousel>
+  </section>
+
+  <section class="table">
+    <div class="filter">
+      <mat-form-field appearance="outline" class="flex-1">
+        <mat-label>Filtrar por nombre u origen</mat-label>
+        <input matInput [formControl]="filter" placeholder="Ej: siam, russian..." />
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="searchTable()">Buscar</button>
+    </div>
+
+    <table mat-table [dataSource]="filteredBreeds()" class="mat-elevation-z2 full-width">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Raza </th>
+        <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="origin">
+        <th mat-header-cell *matHeaderCellDef> Origen </th>
+        <td mat-cell *matCellDef="let row"> {{row.origin}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="life_span">
+        <th mat-header-cell *matHeaderCellDef> Vida </th>
+        <td mat-cell *matCellDef="let row"> {{row.life_span}} años </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </section>
+</div>
